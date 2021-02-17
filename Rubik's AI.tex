@@ -1,0 +1,88 @@
+\documentclass[]{article}
+
+
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+
+
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{proposition}{Proposição}[section]
+\newtheorem{lemma}{Lema}[section]
+\newtheorem{algo}{Algoritmo}[section]
+\newtheorem{coro}{Corolário}[section]
+\newtheorem*{remark}{Remark}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{problem}{Problema}[section]
+\theoremstyle{definition}
+\newtheorem{exmp}{Example}[section]
+
+
+\newcommand{\ck}{\textbf{CK}}
+\newcommand{\raw}{\rightarrow}
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\bb}{\mathbb}
+\newcommand{\x}{\textbf{x}}
+\newcommand{\oz}{\textbf{o}}
+\newcommand{\mum}{^{-1}}
+\newcommand{\sa}{\overline{\text{span}}}
+
+
+
+
+
+%opening
+\title{Rubik's AI}
+\author{Commelin, J. Tavares, H.}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We generate from vanilla javascript a deep neural network that is able to solve the famous Rubik's cube puzzle. We then implement optimizations on the performance and analyze alternative solutions. Finally we investigate generalizations of the puzzle into a specific family of polyhedra.
+\end{abstract}
+
+\section{Definitions and Conventions}
+
+We shall use the following data structure to represent the Rubik's cube in its possible states. 
+
+\begin{definition}
+	The data defining a Rubik's cube will be a tuple $(F, E, C, S, R)$ where $F$ is the set of $6$ faces, $E$ the set of $12$ edges between these faces, $C$ a set of $26$ cells, $S$ the set of possible states (the $6$ possible colors) of a cell and $R$ the set of allowed rotations, \ie, the possible ways to change the states of the cells in a  way. 
+\end{definition}
+
+\begin{definition}
+	A graph is a triple $(X^0, X^1, \phi)$ where $X^0, X^1$ are sets and $\phi: X^1 \raw \mathcal{P}_2(X)$ ($\mathcal{P}_2(X^0) = \{S \subset X^0; \ |S| = 2 \}$) is a map called the incidence map of the graph. The elements of $X^0$ are called vertices or nodes, and the elements of $X^1$ are called edges.	
+	
+	If $\phi(e) = \{x, y\}$, we say that $e$ is incident on $x$ and $y$ and $x, y$ are incident on $e$.
+\end{definition}
+
+Recall that given a planar graph $X$, the dual graph $\hat{X}$ is the graph obtained by placing a vertex at each face of the graph $X$ and connecting two such vertices when the corresponding faces share an edge. This way a face $f$ of $X$ is a vertex of the dual of $X$, or symbolically $f \in \hat{X}^0$.
+
+\begin{definition}
+	Proposition of definition for a generalized Rubik's cube on a arbitrary planar graph.
+	
+	A Rubik's graph is a tuple $(X, \{Y_f\}, S, \{s_f\}, T)$ where $X$ is a planar graph, $Y_f$ is a fixed graph for all $f \in \hat{X}^0$, $s_f: Y_f^0 \raw S$ is a collection of state functions indexed by the vertex set of $\hat{X}$ and $T$ is a set of bijections $t:\bigcup_f Y^0_f \raw \bigcup_f Y^0_f$.
+	
+\end{definition}
+
+This is an explanation of the structure described by the definition.
+
+\begin{enumerate}
+	\item Each face $f$ of the planar graph $X$ "has a copy" of $Y$, which we shall call the graph of face $Y$. Each vertex of a face graph will be called a cell. In the Rubik's cube, $f$ is a $3\times 3$ grid graph.
+	
+	\item The state functions $s_f$ hold the information of the current state of each cell on face $f$. In the Rubik's cube $|S| = 6$, which is the same number of faces. 
+	
+	\item The elements $t$ of $T$ are responsible for changing the states of the system, by sending the states of cell $\alpha \in f$ to cell $t(\alpha)$ in the corresponding face.  
+\end{enumerate}
+
+
+
+
+\end{document}
